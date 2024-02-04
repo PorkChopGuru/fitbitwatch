@@ -10,19 +10,21 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.result === 'success') {
-                        var cadzarValue = parseFloat(data.conversion_rates.ZAR).toFixed(2);
-                        var dateTime = new Date().toLocaleString("en-US", {timeZone: "America/Vancouver"});
+                        var cadToZarRate = data.conversion_rates.ZAR;
+                        var dateTime = new Date().toLocaleString("en-US", { timeZone: "America/Vancouver" });
+
                         var jsonResponse = {
                             "status": "ok",
-                            "info": "CAD 1 = ZAR " + cadzarValue + "\\n\\n" + dateTime
+                            "info": "CAD 1 = ZAR " + cadToZarRate.toFixed(2) + "\\n\\n" + dateTime
                         };
+
                         document.body.innerText = JSON.stringify(jsonResponse, null, 2);
                     } else {
-                        document.body.innerText = JSON.stringify({"status": "error", "info": "Invalid or no JSON input or API error."}, null, 2);
+                        document.body.innerText = JSON.stringify({ "status": "error", "info": "API error or invalid response." }, null, 2);
                     }
                 })
                 .catch(error => {
-                    document.body.innerText = JSON.stringify({"status": "error", "info": "Fetch error: " + error}, null, 2);
+                    document.body.innerText = JSON.stringify({ "status": "error", "info": "Fetch error: " + error }, null, 2);
                 });
         });
     </script>
