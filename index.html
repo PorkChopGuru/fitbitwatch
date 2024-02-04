@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exchange Rate Checker</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // URL of the exchange rate API
+            var url = "https://v6.exchangerate-api.com/v6/43c2368b1bc541af101361c6/latest/CAD";
+
+            // Fetch API data
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.result === 'success') {
+                        var cadzarValue = parseFloat(data.conversion_rates.ZAR);
+                        var info = "CAD 1 = ZAR " + cadzarValue.toFixed(2) + "\n";
+
+                        // Get current date and time in Vancouver timezone
+                        var dateTime = new Date().toLocaleString("en-US", {timeZone: "America/Vancouver"});
+                        info += "\n" + dateTime;
+                        
+                        document.getElementById("apiResponse").textContent = info;
+                    } else {
+                        // Handle invalid or no JSON input or API error
+                        document.getElementById("apiResponse").textContent = "Invalid or no JSON input or API error.";
+                    }
+                })
+                .catch(error => {
+                    // Handle fetch error
+                    document.getElementById("apiResponse").textContent = "Fetch error: " + error;
+                });
+        });
+    </script>
+</head>
+<body>
+    <h1>Exchange Rate Information</h1>
+    <p id="apiResponse">Loading...</p>
+</body>
+</html>
