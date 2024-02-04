@@ -1,28 +1,38 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Exchange Rate JSON Data</title>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // URL of the exchange rate API
             var url = "https://v6.exchangerate-api.com/v6/43c2368b1bc541af101361c6/latest/CAD";
 
-            // Fetch API data and display JSON
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("apiResponse").textContent = JSON.stringify(data, null, 2);
+                    if (data && data.result === 'success') {
+                        var cadzarValue = parseFloat(data.conversion_rates.ZAR).toFixed(2);
+                        var dateTime = new Date().toLocaleString("en-US", {timeZone: "America/Vancouver"});
+                        var jsonResponse = {
+                            "status": "ok",
+                            "info": "CAD 1 = ZAR " + cadzarValue + "\\n\\n" + dateTime
+                        };
+                        document.body.innerText = JSON.stringify(jsonResponse, null, 2);
+                    } else {
+                        document.body.innerText = JSON.stringify({"status": "error", "info": "Invalid or no JSON input or API error."}, null, 2);
+                    }
                 })
                 .catch(error => {
-                    document.getElementById("apiResponse").textContent = "Fetch error: " + error;
+                    document.body.innerText = JSON.stringify({"status": "error", "info": "Fetch error: " + error}, null, 2);
                 });
         });
     </script>
+    <style>
+        body {
+            font-family: monospace;
+            white-space: pre;
+        }
+    </style>
 </head>
 <body>
-    <h1>API Response in JSON Format</h1>
-    <pre id="apiResponse">Loading...</pre>
 </body>
 </html>
