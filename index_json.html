@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exchange Rate JSON Data</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // URL of the exchange rate API
+            var url = "https://v6.exchangerate-api.com/v6/43c2368b1bc541af101361c6/latest/CAD";
+
+            // Fetch API data and display JSON
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("apiResponse").textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById("apiResponse").textContent = "Fetch error: " + error;
+                });
+        });
+    </script>
+</head>
+<body>
+    <h1>API Response in JSON Format</h1>
+    <pre id="apiResponse">Loading...</pre>
+</body>
+</html>
